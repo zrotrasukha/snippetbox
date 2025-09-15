@@ -1,6 +1,6 @@
-{{define "title"}}Snippet #{{.Snippet.Id}}{{end}}
+{{define "title"}}Snippet #{{ .Snippet.Id}}{{end}}
 {{define "main"}}
-    {{define .Snippet}}
+    {{with .Snippet}}
     <div class='snippet'>
         <div class='metadata'>
             <strong>{{.Title}}</strong>
