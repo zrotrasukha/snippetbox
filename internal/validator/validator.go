@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"slices"
 	"strings"
 	"unicode/utf8"
 )
@@ -24,24 +25,19 @@ func (v *Validator) AddFieldError(key, message string) {
 }
 
 func (v *Validator) CheckField(ok bool, key, message string) {
-	if !ok{
+	if !ok {
 		v.AddFieldError(key, message)
 	}
 }
 
-func NotBlank(val string)bool{
-	return strings.TrimSpace(val) == ""
+func NotBlank(val string) bool {
+	return strings.TrimSpace(val) != ""
 }
 
 func MaxChars(val string, n int) bool {
-	return utf8.RuneCountInString(val) <=n 
+	return utf8.RuneCountInString(val) <= n
 }
 
-func PermittedInt(value int, permittedValues ...int)bool {
-	for i := range permittedValues {
-		if value == permittedValues[i] {
-			return true
-		}
-	}
-	return false
+func PermittedInt(value int, permittedValues ...int) bool {
+	return slices.Contains(permittedValues, value)
 }
