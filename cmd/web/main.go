@@ -14,7 +14,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/zrotrasukha/snippetbox/internal/modeles"
+	"github.com/zrotrasukha/snippetbox/internal/models"
 )
 
 type config struct {
@@ -24,8 +24,8 @@ type config struct {
 type application struct {
 	errorLog       *log.Logger
 	infoLog        *log.Logger
-	snippets       *modeles.SnippetModel
-	users          *modeles.UserModel
+	snippets       *models.SnippetModel
+	users          *models.UserModel
 	templateCache  map[string]*template.Template
 	formDecoder    *form.Decoder
 	sessionManager *scs.SessionManager
@@ -77,8 +77,8 @@ func main() {
 	app := &application{
 		errorLog:       errorLog,
 		infoLog:        infoLog,
-		snippets:       &modeles.SnippetModel{DB: db},
-		users:          &modeles.UserModel{DB: db},
+		snippets:       &models.SnippetModel{DB: db},
+		users:          &models.UserModel{DB: db},
 		templateCache:  templateCache,
 		formDecoder:    formDecoder,
 		sessionManager: sessionsManager,
