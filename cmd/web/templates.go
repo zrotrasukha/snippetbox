@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/zrotrasukha/snippetbox/internal/modeles"
+	"github.com/zrotrasukha/snippetbox/internal/models"
 )
 
 type templateData struct {
-	Snippet     *modeles.Snippet
-	Snippets    []*modeles.Snippet
+	Snippet     *models.Snippet
+	Snippets    []*models.Snippet
 	CurrentYear int
 	Form        any
 	Flash       string
