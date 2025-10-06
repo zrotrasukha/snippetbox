@@ -8,7 +8,7 @@ import (
 )
 
 type Snippet struct {
-	Id      int
+	ID      int
 	Title   string
 	Content string
 	Created time.Time
@@ -46,7 +46,7 @@ func (m *SnippetModel) Get(id int) (*Snippet, error) {
 	row := m.DB.QueryRowContext(ctx, query, id)
 	var s Snippet
 
-	err := row.Scan(&s.Id, &s.Title, &s.Content, &s.Expires)
+	err := row.Scan(&s.ID, &s.Title, &s.Content, &s.Expires)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord
@@ -76,7 +76,7 @@ func (m *SnippetModel) Latest() ([]*Snippet, error) {
 	for rows.Next() {
 		s := &Snippet{}
 
-		err = rows.Scan(&s.Id, &s.Title, &s.Content, &s.Created, &s.Expires)
+		err = rows.Scan(&s.ID, &s.Title, &s.Content, &s.Created, &s.Expires)
 		if err != nil {
 			return nil, err
 		}
