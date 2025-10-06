@@ -10,7 +10,10 @@ require (
 	golang.org/x/crypto v0.42.0
 )
 
-require gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+require (
+	github.com/justinas/nosurf v1.2.0 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
+)
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
