@@ -5,18 +5,23 @@ import (
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
+	"github.com/zrotrasukha/snippetbox/ui"
 )
 
 func (app *application) routes() http.Handler {
 	router := httprouter.New()
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
+
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 	})
 
-	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
+	fileServer := http.FileServer(http.FS(ui.Files))
 
-	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf)
+	// no prefix required whi
+	// router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
+	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
+
+	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
 	protected := dynamic.Append(app.requireAuthentication)
 
 	// unprotected
@@ -27,7 +32,7 @@ func (app *application) routes() http.Handler {
 	router.Handler(http.MethodPost, "/user/login", dynamic.ThenFunc(app.userLoginPost))
 	router.Handler(http.MethodGet, "/snippet/view/:id", dynamic.ThenFunc(app.snippetView))
 
-	//protected routes
+	// protected routes
 	router.Handler(http.MethodGet, "/snippet/create", protected.ThenFunc(app.snippetCreate))
 	router.Handler(http.MethodPost, "/snippet/create", protected.ThenFunc(app.snippetCreatePost))
 	router.Handler(http.MethodPost, "/user/logout", protected.ThenFunc(app.userLogoutPost))
