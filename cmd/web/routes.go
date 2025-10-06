@@ -17,7 +17,7 @@ func (app *application) routes() http.Handler {
 
 	fileServer := http.FileServer(http.FS(ui.Files))
 
-	// no prefix required whi
+	// no prefix required
 	// router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
 
