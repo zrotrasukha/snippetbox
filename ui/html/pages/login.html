@@ -2,7 +2,8 @@
 
 {{define "main"}}
 
-<form action='/user/login' methods='POST'>
+<form action='/user/login' method='POST'>
+  <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
   {{range .Form.NonFieldErrors}}
     <div class="error">{{.}}</div>
   {{end}}
