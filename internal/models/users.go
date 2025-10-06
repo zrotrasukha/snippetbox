@@ -1,3 +1,4 @@
+// Package models is responsible for communicating with the database
 package models
 
 import (
@@ -11,11 +12,11 @@ import (
 )
 
 type User struct {
-	Id              int
-	Name            string
-	Email           string
-	Hashed_password []byte
-	Created_at      time.Time
+	ID             int
+	Name           string
+	Email          string
+	HashedPassword []byte
+	CreatedAt      time.Time
 }
 
 type UserModel struct {
@@ -24,6 +25,10 @@ type UserModel struct {
 
 func (m *UserModel) INSERT(name, email, password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		return err
+	}
+
 	stmt := `INSERT INTO users (name, email, password, created) 
 					VALUES(?, ?, ?, UTC_TIMESTAMP());`
 
@@ -66,6 +71,12 @@ func (m *UserModel) Authenticate(email, password string) (int, error) {
 
 	return id, nil
 }
-func (u *UserModel) Exists(id int) (bool, error) {
-	return false, nil
+
+func (m *UserModel) Exists(id int) (bool, error) {
+	var exists bool
+
+	stmt := `SELECT EXISTS ( SELECT true FROM users WHERE id=?);`
+
+	err := m.DB.QueryRow(stmt, id).Scan(&exists)
+	return exists, err
 }
