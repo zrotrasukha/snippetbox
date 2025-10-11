@@ -21,8 +21,9 @@ func (app *application) routes() http.Handler {
 	// router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileServer))
 	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
 
+	router.HandlerFunc(http.MethodGet, "/ping", ping)
+
 	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
-	protected := dynamic.Append(app.requireAuthentication)
 
 	// unprotected
 	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))
@@ -33,6 +34,8 @@ func (app *application) routes() http.Handler {
 	router.Handler(http.MethodGet, "/snippet/view/:id", dynamic.ThenFunc(app.snippetView))
 
 	// protected routes
+	protected := dynamic.Append(app.requireAuthentication)
+
 	router.Handler(http.MethodGet, "/snippet/create", protected.ThenFunc(app.snippetCreate))
 	router.Handler(http.MethodPost, "/snippet/create", protected.ThenFunc(app.snippetCreatePost))
 	router.Handler(http.MethodPost, "/user/logout", protected.ThenFunc(app.userLogoutPost))
