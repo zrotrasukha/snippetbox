@@ -15,13 +15,6 @@ import (
 	"github.com/zrotrasukha/snippetbox/internal/models/mocks"
 )
 
-func newTestApplication(t *testing.T) *application {
-	return &application{
-		errorLog: log.New(io.Discard, "", 0),
-		infoLog:  log.New(io.Discard, "", 0),
-	}
-}
-
 type testServer struct {
 	*httptest.Server
 }
@@ -36,7 +29,7 @@ func newTestServer(t *testing.T, h http.Handler) *testServer {
 
 	ts.Client().Jar = jar
 
-	ts.Client().CheckRedirect = func(req *http.Request, via []*http.Request) err {
+	ts.Client().CheckRedirect = func(req *http.Request, via []*http.Request) error {
 		return http.ErrUseLastResponse
 	}
 	return &testServer{ts}
