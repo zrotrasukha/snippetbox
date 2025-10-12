@@ -57,7 +57,7 @@ func TestSnippetView(t *testing.T) {
 			wantCode: http.StatusNotFound,
 		},
 		{
-			name:     "EmptyI ID",
+			name:     "Empty ID",
 			urlPath:  "/snippet/view/",
 			wantCode: http.StatusNotFound,
 		},
