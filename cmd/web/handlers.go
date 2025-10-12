@@ -48,7 +48,7 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil || id < 1 {
-		app.clientError(w, http.StatusBadRequest)
+		app.clientError(w, http.StatusNotFound)
 		return
 	}
 	// id check
