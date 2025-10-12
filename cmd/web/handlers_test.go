@@ -13,7 +13,7 @@ func TestPing(t *testing.T) {
 	ts := newTestServer(t, app.routes())
 	defer ts.Close()
 
-	statusCode, _, body := ts.get(t, ts.URL)
+	statusCode, _, body := ts.get(t, "/ping")
 
 	assert.Equal(t, statusCode, http.StatusOK)
 	assert.Equal(t, string(body), "OK")
