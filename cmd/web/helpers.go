@@ -82,5 +82,4 @@ func (app *application) decodePostForm(r *http.Request, dst any) error {
 	}
 
 	return nil
-
 }
