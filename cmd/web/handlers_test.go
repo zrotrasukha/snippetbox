@@ -74,3 +74,16 @@ func TestSnippetView(t *testing.T) {
 		})
 	}
 }
+
+func TestUserSignup(t *testing.T) {
+	app := newTestApplication(t)
+	ts := newTestServer(t, app.routes())
+	ts.Close()
+
+	_, _, body := ts.get(t, "/user/signup")
+
+	csrftoken := extractCSRFToken(t, body)
+
+	// t.log works just like printf but it just outputs to test output rather than std.output
+	t.Logf("CSRF token is: %q", csrftoken)
+}
