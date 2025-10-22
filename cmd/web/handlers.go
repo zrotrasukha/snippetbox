@@ -48,7 +48,7 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil || id < 1 {
-		app.clientError(w, http.StatusNotFound)
+		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 	// id check
@@ -122,7 +122,7 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 	var form userSignupForm
 	err := app.decodePostForm(r, &form)
 	if err != nil {
-		app.clientError(w, http.StatusBadGateway)
+		app.clientError(w, http.StatusBadRequest)
 		return
 	}
 
@@ -168,6 +168,8 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	var form UserLoginForm
 
 	err := app.decodePostForm(r, &form)
+	fmt.Println("DECODE ERR:", err)
+	fmt.Printf("FORM CONTENT: %+v\n", form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
 		return
