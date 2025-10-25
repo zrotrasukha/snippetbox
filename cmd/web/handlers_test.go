@@ -107,7 +107,6 @@ func TestUserSignup(t *testing.T) {
 			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
 			wantCode:     http.StatusSeeOther,
-			wantFormTag:  formTag,
 		},
 		{
 			name:         "Invalid CSRF Token",
@@ -132,6 +131,15 @@ func TestUserSignup(t *testing.T) {
 			userName:     validName,
 			userEmail:    validEmail,
 			userPassword: "",
+			csrfToken:    validCSRFToken,
+			wantCode:     http.StatusUnprocessableEntity,
+			wantFormTag:  formTag,
+		},
+		{
+			name:         "Emtpy email",
+			userName:     validName,
+			userEmail:    "",
+			userPassword: validPassword,
 			csrfToken:    validCSRFToken,
 			wantCode:     http.StatusUnprocessableEntity,
 			wantFormTag:  formTag,
@@ -171,7 +179,7 @@ func TestUserSignup(t *testing.T) {
 			form.Add("email", tt.userEmail)
 			form.Add("password", tt.userPassword)
 			form.Add("csrf_token", tt.csrfToken)
-
+			t.Log(form)
 			code, _, body := ts.postForm(t, "/user/signup", form)
 
 			assert.Equal(t, code, tt.wantCode)
