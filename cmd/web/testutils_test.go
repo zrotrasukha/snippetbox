@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"database/sql"
 	"html"
 	"io"
 	"log"
@@ -10,7 +9,6 @@ import (
 	"net/http/cookiejar"
 	"net/http/httptest"
 	"net/url"
-	"os"
 	"regexp"
 	"testing"
 	"time"
@@ -104,32 +102,4 @@ func (ts *testServer) postForm(t *testing.T, urlPath string, form url.Values) (i
 
 	bytes.TrimSpace(body)
 	return rs.StatusCode, rs.Header, string(body)
-}
-
-func newTestDB(t *testing.T) *sql.DB {
-	db, err := sql.Open("mysql", "test_web:pass@/test_snippetbox?parseTime=true&multiStatements=true")
-	if err != nil {
-		t.Fatal(err)
-	}
-	script, err := os.ReadFile("./testdata/setup.sql")
-
-	_, err = db.Exec(string(script))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	t.Cleanup(func() {
-		script, err := os.ReadFile("./testdata/teardown.sql")
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		_, err = db.Exec(string(script))
-		if err != nil {
-			t.Fatal(err)
-		}
-
-		db.Close()
-	})
-	return db
 }
