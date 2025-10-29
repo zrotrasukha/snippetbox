@@ -25,6 +25,11 @@ type User struct {
 	CreatedAt      time.Time
 }
 
+// we have separated UserModel from User itself is because
+// we might need it in different environments where db case is different
+// for example, we are using in snippetbox/internal/models/users_test.go
+// for testing purposes
+
 type UserModel struct {
 	DB *sql.DB
 }
